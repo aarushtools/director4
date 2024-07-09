@@ -256,6 +256,9 @@ if [[ ! -e /etc/director-shell-keys/shell-encryption-token-privkey.pem ]]; then
     (cd manager; sudo -H -u vagrant pipenv run ../scripts/generate-rsa-key.py 4096 /etc/director-shell-keys/shell-encryption-token-pubkey.pem /etc/director-shell-keys/shell-encryption-token-privkey.pem)
 fi
 
+# Provisioning sometimes fails if $HOME/director/shared isn't in $PYTHONPATH for Pipenv
+sudo -H -u vagrant ./scripts/add_env.sh
+
 # Migrate database
 (cd manager; sudo -H -u vagrant pipenv run ./manage.py migrate)
 
